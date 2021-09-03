@@ -1,0 +1,250 @@
+<%def money(num)
+  "$#{num.gsub(/\d(?=(...)+$)/, '\0,')}"
+end
+%>
+<form action="/cp4irespuesta" method="get">
+
+  <div class="wrapper wrapper-content animated fadeInRight">
+       <div class="row">
+           <div class="col-lg-12">
+               <div class="ibox float-e-margins">
+                  <div class="ibox-title">
+                        <h5>Configuración Clúster CP4I</h5>
+
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+
+                          <table style="width:100%" align="left"  class="footable table table-stripped toggle-arrow-tiny">
+                            <tr>
+                              <td>
+                                  <!-- tabla parametros del clúster -->
+                                  <table style="width:100%" align="left">
+                                    <tr>
+                                      <th bgcolor="#00008B" style="color: white;">Parámetro</th>
+                                      <th bgcolor="#00008B" style="color: white;">Valor</th>
+                                    </tr>
+                                    <tr>
+                                      <td>CPU</td>
+                                      <td>
+                                        <label for="cpu"><input type="number" id="cpu" name="cpu">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>RAM (GB)</td>
+                                      <td>
+                                        <label for="RAM (GB)"><input type="number" id="ram" name="ram">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Almacenamiento Blockstorage/Filestorage (GB)</td>
+                                      <td>
+                                        <label for="Almacenamiento Filestorage (GB)"><input type="number" id="storage" name="storage">
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>IOPS Almacenamiento</td>
+                                      <td>
+                                        <select name="iops" id="iops">
+                                          <option value=".25">.25</option>
+                                          <option value="2">2</option>
+                                          <option value="4">4</option>
+                                          <option value="10">10</option>
+                                        </select>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>Región</td>
+                                      <td>
+                                        <select name="region" id="region">
+                                          <option value="mexico">México</option>
+                                          <option value="dallas">Dallas</option>
+                                        </select>
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <td>Precios del País</td>
+                                      <td>
+                                        <select name="preciopais" id="preciopais">
+                                          <option value="mexico">México</option>
+                                        </select>
+                                      </td>
+                                      <tr>
+                                        <td>Tipo Infraestructura</td>
+                                        <td>
+                                          <select name="infra_type" id="infra_type">
+                                            <option value="shared">Compartida</option>
+                                            <option value="dedicated">Dedicada</option>
+                                            <option value="bm">Bare Metal</option>
+                                          </select>
+                                        </td>
+                                  </table>
+
+
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+
+<p>
+<button type="submit">Quiero mi dimensionamiento</button>
+</p>
+
+
+
+</form>
+<!--%=respuestastorage%-->
+<% if (respuestastorage != nil and respuestastorage.size>0) then%>
+<div class="wrapper wrapper-content animated fadeInRight">
+     <div class="row">
+         <div class="col-lg-12">
+             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                      <h5>Dimensionamiento Almacenamiento</h5>
+
+                      <div class="ibox-tools">
+                          <a class="collapse-link">
+                              <i class="fa fa-chevron-up"></i>
+                          </a>
+                      </div>
+                  </div>
+
+                  <div class="ibox-content">
+
+                        <table  style="width:100%" align="left"  class="footable table table-stripped toggle-arrow-tiny">
+                          <thead>
+                            <tr>
+                              <th bgcolor="#00008B" style="color: white;">Precio Mensual (USD) Unidades</th>
+                              <th bgcolor="#00008B" style="color: white;">IOPS/GB</th>
+                              <th bgcolor="#00008B" style="color: white;">Tamaño máximo</th>
+                              <th bgcolor="#00008B" style="color: white;">Unidades de Tamaño Máximo</th>
+                              <th bgcolor="#00008B" style="color: white;">Precio Mensual (USD) Unidad Restante</th>
+                              <th bgcolor="#00008B" style="color: white;">Unidad Restante</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% respuestastorage.each do |json| %>
+                              <tr>
+                                <td>$<%= json["precio"].to_s %> USD</td>
+                                <td><%= json["iops"].to_s %></td>
+                                <td><%= json["maxunit"].to_s %></td>
+                                <td><%= json["unidades"].to_s %></td>
+                                <td>$<%= json["preciounidadrestante"].to_s %> USD</td>
+                                <td><%= json["unidadrestante"].to_s %></td>
+                              </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<% end %>
+
+<!--%=respuestastorage%-->
+<% if (respuestasizing != nil and respuestasizing.size>0) then%>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+     <div class="row">
+         <div class="col-lg-12">
+             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                      <h5>Dimensionamiento Clúster Óptimo</h5>
+
+                      <div class="ibox-tools">
+                          <a class="collapse-link">
+                              <i class="fa fa-chevron-up"></i>
+                          </a>
+                      </div>
+                  </div>
+
+                  <div class="ibox-content">
+                      <table  style="width:100%" align="left"  class="footable table table-stripped toggle-arrow-tiny">
+                        <thead>
+                          <tr>
+                            <th bgcolor="#00008B" style="color: white;">Precio Mensual (USD) sin SubsOCP </th>
+                            <th bgcolor="#00008B" style="color: white;">Flavor</th>
+                            <th bgcolor="#00008B" style="color: white;">Tipo de Infraestructura</th>
+                            <th bgcolor="#00008B" style="color: white;">Workers</th>
+                            <!--th bgcolor="#00008B" style="color: white;">Precio  Mensual (USD) con Subscripción OCP</th-->
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% respuestasizing.each do |json| %>
+                            <tr>
+                              <td><div class="myDIV">$<%= json["precio"].to_s %> USD</div></td>
+                              <td><%= json["flavor"].to_s %></td>
+                              <td><%= json["infra_type"].to_s %></td>
+                              <td><%= json["workers"].to_s %></td>
+                              <!--td><div class="myDIV">$<%= json["precio_subs"].to_s %> USD</div></td-->
+                            </tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+<% end %>
+
+<% if (respuestasizingalt != nil and respuestasizingalt.size>0) then%>
+<div class="wrapper wrapper-content animated fadeInRight">
+     <div class="row">
+         <div class="col-lg-12">
+             <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                      <h5>Alternativas del Dimensionamiento Clúster</h5>
+
+                      <div class="ibox-tools">
+                          <a class="collapse-link">
+                              <i class="fa fa-chevron-up"></i>
+                          </a>
+                      </div>
+                  </div>
+
+                  <div class="ibox-content">
+
+                        <table  style="width:100%" align="left"  class="footable table table-stripped toggle-arrow-tiny">
+                          <thead>
+                            <tr>
+                              <th bgcolor="#00008B" style="color: white;">Flavor</th>
+                              <th bgcolor="#00008B" style="color: white;">Tipo de Infraestructura</th>
+                              <th bgcolor="#00008B" style="color: white;">Workers</th>
+                              <th bgcolor="#00008B" style="color: white;">Precio Mensual (USD) sin SubsOCP </th>
+                              <!--th bgcolor="#00008B" style="color: white;">Precio Mensual (USD) con Subscripción OCP</th-->
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <% respuestasizingalt.each do |json| %>
+                              <tr>
+                                <td><%= json["flavor"].to_s %></td>
+                                <td><%= json["infra_type"].to_s %></td>
+                                <td><%= json["workers"].to_s %></td>
+                                <td>$<%= json["precio"].to_s %> USD</td>
+                                <!--td>$<%= json["precio_subs"].to_s %> USD</td-->
+                              </tr>
+                            <% end %>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+<% end %>
