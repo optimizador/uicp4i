@@ -172,16 +172,21 @@
                               <td>Volumen a respaldar entre Persistent Volumes y archivos YAML(GB): </td>
                               <td><input type="number" id="almacenamientogb" name="almacenamientogb"></td>
                             </tr>
+
+
                             <tr>
                               <td>Región Almacenamiento de Respaldos: </td>
                               <td><select name="countryrespaldo" id="countryrespaldo">
-                                <option value="mexico">México</option>
+                                <!--option value="mexico">México</option -->
+                                <option value="dallas">Dallas</option>
+                                <option value="wdc">Washington</option>
                               </select></td>
                             </tr>
                             <tr>
                               <td>Resiliencia del respaldo: </td>
                               <td><select name="resiliencybackup" id="resiliencybackup">
-                                <option value="single">Single Region</option>
+                                <!-- option value="single">Single Region</option -->
+                                <option value="regional">Regional</option>
                               </select></td>
                             </tr>
                           </table>
