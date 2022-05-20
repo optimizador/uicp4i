@@ -172,7 +172,10 @@
                               <td>Volumen a respaldar entre Persistent Volumes y archivos YAML(GB): </td>
                               <td><input type="number" id="almacenamientogb" name="almacenamientogb"></td>
                             </tr>
-
+                            <tr>
+                              <td>Usar con PX-Enterprise: </td>
+                              <td><input type="checkbox" id="pxent" value="false" onClick="usaPXEnterprise(this);"></td>
+                            </tr>
 
                             <tr>
                               <td>Región Almacenamiento de Respaldos: </td>
@@ -214,6 +217,7 @@
                               </td>
                             <td>
                               <input type="number" id="rdiarioretencion" name="rdiarioretencion">
+                              %Cambios Diarios <input type="number" id="diff" name="diff" min="1" max="100" value="100" step="1" disabled>
                             </td>
                           </tr>
                           <tr>
@@ -308,15 +312,15 @@
                             <tr>
                               <td>
                                 NOTAS en el llenado de parámetros:<br>
-                                1. Direct Link Dedicated es soportado con puertos 1,2,5y10Gbps en México y Dallas MZR<br>
-                                2. Direct link v2.0 es soportado con puertos desde 50Mbps hasta 5Gbps en Dallas MZR<br>
-                                2. Direct link Connect on Classic es soportado con puertos desde 50Mbps hasta 5Gbps en México y Dallas 3 y 4<br>
+                                1. Direct Link Dedicated v2.0 es soportado con puertos 1,2,5y10Gbps en  Dallas, Washington MZR<br>
+                                2. Direct link Connect v2.0 es soportado con puertos desde 50Mbps hasta 5Gbps en Dallas, Washington MZR<br>
+                                2. Direct link Connect on Classic es soportado con puertos desde 50Mbps hasta 5Gbps en Dallas 3 y 4<br>
                                 2. Direct link Exchange es soportado con puertos desde 50Mbps hasta 5Gbps en Dallas 3 y 13<br>
                               </td>
                             </tr>
                             <tr>
                               <td>
-                                  <!-- tabla parametros del gateway -->
+                                  <!-- tabla parametros del enlace dedicado -->
                                   <table style="width:100%" align="left">
                                     <tr>
                                       <th bgcolor="#00008B" style="color: white;">Parámetro</th>
@@ -326,10 +330,12 @@
                                       <td>Región</td>
                                       <td>
                                           <select name="regiondl" id="regiondl">
-                                            <option value="mexico" selected="selected">México</option>
+                                            <!-- option value="mexico" selected="selected">México</option -->
                                             <option value="dallas">Dallas MZR</option>
+                                            <option value="wdc">Washington MZR</option>
                                             <option value="dal3y4">Dallas 3 y 4</option>
                                             <option value="dal3y13">Dallas 3 y 13</option>
+                                            <option value="wdc2">Washington 2</option>
                                           </select>
                                       </td>
                                     </tr>
@@ -337,11 +343,13 @@
                                       <td>Tipo</td>
                                       <td>
                                         <select name="typedl" id="typedl">
+                                          <option value="dcv2met">Connect v2.0 metered</option>
+                                          <option value="dcv2unmet">Connect v2.0 unmetered</option>
+                                          <option value="ddv2unmet">Dedicated v2.0 unmetered</option>
+                                          <option value="ddv2met">Dedicated v2.0 metered</option>
                                           <option value="eclassic">Exchange on Classic</option>
                                           <option value="cclassic">Connect on classic</option>
                                           <option value="dclassic">Dedicated on classic</option>
-                                          <option value="dv2unmet">Dedicated v2.0 unmetered</option>
-                                          <option value="dv2met">Dedicated v2.0 metered</option>
                                         </select>
                                       </td>
                                     </tr>
@@ -996,5 +1004,20 @@
   {
     document.getElementById("almacenamientogb").value=document.getElementById("storage").value;
   };
+
+    function usaPXEnterprise(checkbox)
+    {
+      if (checkbox.checked)
+      {
+        document.getElementById("diff").value=3;
+        document.getElementById("diff").disabled=false;
+      }
+      else
+      {
+        document.getElementById("diff").value=100;
+        document.getElementById("diff").disabled=true;
+      }
+
+    };
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
