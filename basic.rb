@@ -381,22 +381,27 @@ end
         logger.info("=====>>> NO INCLUYE GATEWAY APPLIANCE")
     end
 
-    ####################################
-    #Cálculo de Direct Link
-    ####################################
-    if incldl=="true"
-        logger.info("llamado api DL:" )
-        respuestasizingdl = RestClient.get "#{urlapiga}/api/v1/sizingdl?region=#{regiondl}&type=#{typedl}&country_offer=#{country_offer}&puerto=#{puerto}&routing=#{routing}&ha=#{ha}", {:params => {}}
-        respuestasizingdl=JSON.parse(respuestasizingdl.to_s)
-        logger.info("*************")
-        logger.info(respuestasizingdl)
+
+  ####################################
+  #Cálculo de Direct Link
+  ####################################
+  if incldl=="true"
+
+      callapi="#{urlapiga}/api/v1/sizingdl?region=#{regiondl}&type=#{typedl}&country_offer=#{country_offer}&puerto=#{puerto}&routing=#{routing}&ha=#{ha}"
+      logger.info("llamado api DL:  #{callapi}" )
+      respuestasizingdl = RestClient.get callapi, {:params => {}}
+      respuestasizingdl=JSON.parse(respuestasizingdl.to_s)
+      logger.info("*************")
+      logger.info(respuestasizingdl)
+      if respuestasizingdl.length()>0
         preciodl=respuestasizingdl[0]["precio"].to_f
         precioservicios=precioservicios+preciodl
         logger.info("Precio Direct Link: #{preciodl}")
         logger.info("Precio Servicios: #{precioservicios}")
-    else
-          logger.info("=====>>> NO INCLUYE DIRECT LINK")
-    end
+      end
+  else
+        logger.info("=====>>> NO INCLUYE DIRECT LINK")
+  end
 
     respuestasoporte=[]
     llamadoapisoporte="#{urlapi}/api/v1/sizingsupport?type=#{tiposoporte}&precioservicios=#{precioservicios}"
@@ -756,15 +761,19 @@ get '/cp4itemplateproduccionrespuesta' do
   #Cálculo de Direct Link
   ####################################
   if incldl=="true"
-      logger.info("llamado api DL:" )
-      respuestasizingdl = RestClient.get "#{urlapiga}/api/v1/sizingdl?region=#{regiondl}&type=#{typedl}&country_offer=#{country_offer}&puerto=#{puerto}&routing=#{routing}&ha=#{ha}", {:params => {}}
+
+      callapi="#{urlapiga}/api/v1/sizingdl?region=#{regiondl}&type=#{typedl}&country_offer=#{country_offer}&puerto=#{puerto}&routing=#{routing}&ha=#{ha}"
+      logger.info("llamado api DL:  #{callapi}" )
+      respuestasizingdl = RestClient.get callapi, {:params => {}}
       respuestasizingdl=JSON.parse(respuestasizingdl.to_s)
       logger.info("*************")
       logger.info(respuestasizingdl)
-      preciodl=respuestasizingdl[0]["precio"].to_f
-      precioservicios=precioservicios+preciodl
-      logger.info("Precio Direct Link: #{preciodl}")
-      logger.info("Precio Servicios: #{precioservicios}")
+      if respuestasizingdl.length()>0
+        preciodl=respuestasizingdl[0]["precio"].to_f
+        precioservicios=precioservicios+preciodl
+        logger.info("Precio Direct Link: #{preciodl}")
+        logger.info("Precio Servicios: #{precioservicios}")
+      end
   else
         logger.info("=====>>> NO INCLUYE DIRECT LINK")
   end
